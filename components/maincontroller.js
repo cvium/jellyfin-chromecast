@@ -18,6 +18,12 @@
     var init = function () {
 
         resetPlaybackScope($scope);
+<<<<<<< HEAD
+=======
+        clearMediaElement();
+        window.VolumeInfo.Level = cast.receiver.media.Volume.level * 100;
+        window.VolumeInfo.IsMuted = cast.receiver.media.Volume.muted;
+>>>>>>> master
     };
 
     init();
@@ -147,7 +153,16 @@
             promise = jellyfinActions.reportPlaybackStopped($scope, reportingParams);
         }
 
+<<<<<<< HEAD
         window.mediaManager.stop();
+=======
+        clearMediaElement();
+
+        window.playlist = [];
+        window.currentPlaylistIndex = -1;
+        embyActions.displayUserInfo($scope, $scope.serverAddress, $scope.accessToken, $scope.userId);
+
+>>>>>>> master
         promise = promise || Promise.resolve();
 
         return promise;
@@ -267,8 +282,18 @@
         else if (data.command == 'ToggleMute') {
             window.castReceiverContext.setSystemVolumeMuted(!systemVolume.muted);
         }
+<<<<<<< HEAD
         else if (data.command == 'Identify' && !isPlaying()) {
             jellyfinActions.displayUserInfo($scope, data.serverAddress, data.accessToken, data.userId);
+=======
+        else if (data.command == 'Identify') {
+            if (!isPlaying()) {
+                embyActions.displayUserInfo($scope, data.serverAddress, data.accessToken, data.userId);
+            } else {
+                // when a client connects send back the initial device state (volume etc) via a playbackstop message
+                embyActions.reportPlaybackProgress($scope, getReportingParams($scope), true, "playbackstop");
+            }
+>>>>>>> master
         }
         else if (data.command == 'SetVolume') {
             // Scale 0-100
@@ -923,6 +948,7 @@
         window.mediaManager.setMediaInformation(mediaInfo, false);
     }
 
+<<<<<<< HEAD
     playbackConfig.supportedCommands = cast.framework.messages.Command.ALL_BASIC_MEDIA;
 
     // Set the available buttons in the UI controls.
@@ -945,4 +971,7 @@
     );
 
     window.castReceiverContext.start(playbackConfig);
+=======
+    window.castReceiverManager.start();
+>>>>>>> master
 });
